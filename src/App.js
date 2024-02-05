@@ -1,6 +1,4 @@
 // client id for spotify-clone app : 333f4b2aaeac4c0e8f39f9a8238fc87c
-
-
 import './App.css';
 import Login from './Components/Login';
 import React, {useEffect, useState} from 'react';
@@ -29,7 +27,7 @@ function App() {
       })
       spotify.setAccessToken(_token);
       spotify.getMe().then( (user) => {
-        // console.log(user);
+      console.log("user->",user);
 
         dispatch({
           type: "SET_USER",
@@ -42,6 +40,15 @@ function App() {
           type: "SET_PLAYLISTS",
           playlists: playlists,
         });
+
+        spotify.getPlaylist("22mm5J4DcucnRDLv0BAvti").then((response) => {
+          dispatch({
+            type: "SET_DISCOVER_WEEKLY",
+            discover_weekly: response,
+          })
+        })
+
+
       })
 
     }
@@ -55,12 +62,11 @@ console.log("token for faster login -> ", token)
     <div className="app">
       {
         token ? (
-          <Player spotify={spotify}/>
+          <Player/>
         ) : (
           <Login/>
         )
       }
-      
     </div>
   );
 }
